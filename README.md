@@ -1,6 +1,6 @@
 # Reading notes
 
-Papers I am reading, grouped by what I am trying to understand. Notes are short on purpose. For each paper I
+Papers I have read, grouped by what I am trying to understand. Notes are short on purpose. For each paper I
 write down the problem, the core idea, and the part I would actually reuse.
 
 Some of the longer notes are interactive pages, written in Chinese with the original English terms kept.
@@ -28,6 +28,31 @@ I am reading this with medical imaging in mind, where visits are irregular and m
 and bandwidth decide what runs locally. Quantization, KV cache compression, and MoE all follow from that.
 
 **Vision on the edge and in 3D.** Detection under a 5W budget on a Jetson Nano, reconstruction, diffusion.
+
+## Parameter-efficient and multi-task adaptation
+
+Read while working on TaskMap.
+
+| Paper | Why it matters here |
+|---|---|
+| [LoRA](https://arxiv.org/abs/2106.09685) (Hu et al., ICLR 2022) | The shared-adapter baseline. |
+| [VeRA](https://arxiv.org/abs/2310.11454) (Kopiczko et al., ICLR 2024) | Frozen random matrices with learned scaling vectors, the closest relative of fixed bases. |
+| RandLoRA (Kalajdzievski, 2025) | Full-rank updates from random bases. |
+| Text-to-LoRA (Charakorn et al., ICML 2025) | Generates an adapter from a task description. |
+| LoraHub (Huang et al., 2024) | Composes existing LoRA modules for a new task. |
+| LoRAGen (Huang et al., 2026) | Learns the weight space of LoRA adapters to generate new ones. |
+| HyperNetworks (Ha et al., ICLR 2017) | One network producing the weights of another. |
+| Shared hypernetworks for multi-task fine-tuning (Mahabadi et al., 2021) | Task-conditioned adapter generation across tasks. |
+| HINT (Ivison et al., 2023) | Hypernetwork instruction tuning for zero- and few-shot generalization. |
+| Hypter (Ye et al., ACL 2022) | Task-aware hypernetwork for few-shot learning. |
+| Adapters (Houlsby et al., 2019) | The original parameter-efficient transfer recipe. |
+| Sparsely-gated mixture of experts (Shazeer et al., 2017) | Routing as a way to separate what different inputs use. |
+| Switch Transformers (Fedus et al., 2022) | Simplified sparse routing at scale. |
+| MegaBlocks (Gale et al., 2023) | Makes sparse expert computation efficient. |
+| Finding skill neurons (Wang et al., 2022) | FFN activations predict task identity, the motivation for adapting FFN blocks. |
+| Neuron specialization (Tan et al., EMNLP 2024) | Task-specific neurons in multilingual translation. |
+| Mapping Networks (Sen and Mukherjee, 2026) | The principle TaskMap builds on. |
+| Super-NaturalInstructions (Wang et al., 2022) | 1,600+ tasks with declarative instructions, a benchmark for generalizing to unseen tasks. |
 
 ## World models
 
@@ -57,3 +82,43 @@ and bandwidth decide what runs locally. Quantization, KV cache compression, and 
 The [page](https://etherimirr.github.io/reading-notes/local-inference/) follows five lines of work:
 compressing weights, KV cache and attention, parallel decoding, tiering and offloading, and model
 architectures that are friendlier to local hardware.
+
+Papers covered on the page:
+
+- Deep Compression (Han, Mao, Dally, ICLR Best Paper) (2016)
+- EIE (Han et al., ISCA) (2016)
+- LLM.int8() (Dettmers et al., NeurIPS) (2022)
+- GPTQ (Frantar, Alistarh et al., ICLR) (2023)
+- SmoothQuant (Xiao, Lin et al., Song Han group, ICML) (2023)
+- AWQ (Lin et al., Song Han group, MLSys 2024 Best Paper) (2023–24)
+- QLoRA (Dettmers et al., NeurIPS) (2023)
+- QuIP# (ICML 2024), AQLM (ICML 2024) (2023–24)
+- BitNet b1.58 (2024-02) → BitNet b1.58 2B4T (2025-04) (2024–25)
+- MXFP4 / NVFP4 formats (2023–25)
+- RFID-MoE and expert-level MoE compression (ICML 2026)
+- MQA (Shazeer, One Write-Head is All You Need) (2019)
+- FlashAttention (Dao et al., NeurIPS) (2022)
+- Orca (Yu et al., OSDI) (2022)
+- vLLM / PagedAttention (Kwon et al., SOSP) (2023)
+- GQA (Ainslie et al., EMNLP) (2023)
+- H2O (Zhang et al., NeurIPS) (2023)
+- StreamingLLM (Xiao et al., Song Han group) (2023 → ICLR 2024)
+- KIVI (ICML), KVQuant (NeurIPS) (2024)
+- MLA (DeepSeek-V2) (2024-05)
+- Hybrid attention: Jamba, MiniMax-01, Qwen3-Next, Kimi Linear (2024–25)
+- Speculative decoding (Leviathan et al., ICML 2023; Chen et al., DeepMind) (2022–23)
+- Medusa (ICML) (2024)
+- EAGLE (ICML 2024) → EAGLE-2 (EMNLP 2024) → EAGLE-3 (2025) (2024–25)
+- MTP (DeepSeek-V3) (2024-12)
+- Diffusion language models: LLaDA, Mercury, Gemini Diffusion (2025)
+- FlexGen (Sheng et al., ICML) (2023)
+- Deja Vu (Liu et al., ICML) (2023)
+- LLM in a flash (Alizadeh et al., Apple) (2023-12 → ACL 2024)
+- PowerInfer (Song et al., SJTU IPADS, SOSP 2024) and PowerInfer-2 (2024)
+- Mixtral offloading (Eliseev & Mazur, 2023)
+- KTransformers (Chen et al., Tsinghua MADSys, SOSP 2025)
+- DALI, FlashMoE, MoE-CORE, FineMoE (EuroSys 2026)
+- Mixtral 8x7B (Mistral) (2023-12)
+- DeepSeek-V3 / R1 (2024-12 / 2025-01)
+- Qwen3 (04), Kimi K2 (07), gpt-oss (08) (2025)
+- Qwen3-Next, Kimi Linear; DeepSeek-V4, Qwen3.5 (2025–26)
