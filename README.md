@@ -1,124 +1,84 @@
-# Reading notes
+# Reading list
 
-Papers I have read, grouped by what I am trying to understand. Notes are short on purpose. For each paper I
-write down the problem, the core idea, and the part I would actually reuse.
+## Adaptation
 
-Some of the longer notes are interactive pages, written in Chinese with the original English terms kept.
+- [LoRA](https://arxiv.org/abs/2106.09685), 2022
+- [VeRA](https://arxiv.org/abs/2310.11454), 2024
+- RandLoRA, 2025
+- Text-to-LoRA, 2025
+- LoraHub, 2024
+- LoRAGen, 2026
+- HyperNetworks, 2017
+- Shared Hypernetworks for Multi-task Fine-tuning, 2021
+- HINT, 2023
+- Hypter, 2022
+- Adapters, 2019
+- Sparsely-Gated Mixture of Experts, 2017
+- Switch Transformers, 2022
+- MegaBlocks, 2023
+- Finding Skill Neurons, 2022
+- Neuron Specialization, 2024
+- Mapping Networks, 2026
+- Super-NaturalInstructions, 2022
 
-| Page | What it covers |
-|---|---|
-| [World models](https://etherimirr.github.io/reading-notes/world-models/) | Foundations, 2023 to 2026 papers, and medical world models. Each entry records what the state is and how the transition is modeled. |
-| [Running large models locally](https://etherimirr.github.io/reading-notes/local-inference/) | Why decoding is bound by memory, five lines of work that attack it, and a tokens-per-second calculator. |
+## Agent evaluation
 
-## What I care about
-
-**Agent evaluation and user simulation.** A tool-calling agent can pass a benchmark and still fail real users.
-I work on measuring that gap: turn-level failure analysis, simulated users, and checking that an LLM judge
-agrees with people before trusting its scores. Benchmarks I work with: [tau-bench](https://arxiv.org/abs/2406.12045)
-and [tau2-bench](https://arxiv.org/abs/2506.07982).
-
-**Parameter-efficient and multi-task adaptation.** One model, many tasks, and the tasks interfere. My paper
-TaskMap (WSDM 2027 Findings, second author) studies where that interference comes from. Its baselines are
-[LoRA](https://arxiv.org/abs/2106.09685), [VeRA](https://arxiv.org/abs/2310.11454), and a full-factor hypernetwork.
-
-**World models.** What should the state be, and how do you predict it without generating every pixel.
-I am reading this with medical imaging in mind, where visits are irregular and most of the patient is unobserved.
-
-**On-device inference.** Generating a token means reading the active weights from memory once, so capacity
-and bandwidth decide what runs locally. Quantization, KV cache compression, and MoE all follow from that.
-
-**Vision on the edge and in 3D.** Detection under a 5W budget on a Jetson Nano, reconstruction, diffusion.
-
-## Parameter-efficient and multi-task adaptation
-
-Read while working on TaskMap.
-
-| Paper | Why it matters here |
-|---|---|
-| [LoRA](https://arxiv.org/abs/2106.09685) (Hu et al., ICLR 2022) | The shared-adapter baseline. |
-| [VeRA](https://arxiv.org/abs/2310.11454) (Kopiczko et al., ICLR 2024) | Frozen random matrices with learned scaling vectors, the closest relative of fixed bases. |
-| RandLoRA (Kalajdzievski, 2025) | Full-rank updates from random bases. |
-| Text-to-LoRA (Charakorn et al., ICML 2025) | Generates an adapter from a task description. |
-| LoraHub (Huang et al., 2024) | Composes existing LoRA modules for a new task. |
-| LoRAGen (Huang et al., 2026) | Learns the weight space of LoRA adapters to generate new ones. |
-| HyperNetworks (Ha et al., ICLR 2017) | One network producing the weights of another. |
-| Shared hypernetworks for multi-task fine-tuning (Mahabadi et al., 2021) | Task-conditioned adapter generation across tasks. |
-| HINT (Ivison et al., 2023) | Hypernetwork instruction tuning for zero- and few-shot generalization. |
-| Hypter (Ye et al., ACL 2022) | Task-aware hypernetwork for few-shot learning. |
-| Adapters (Houlsby et al., 2019) | The original parameter-efficient transfer recipe. |
-| Sparsely-gated mixture of experts (Shazeer et al., 2017) | Routing as a way to separate what different inputs use. |
-| Switch Transformers (Fedus et al., 2022) | Simplified sparse routing at scale. |
-| MegaBlocks (Gale et al., 2023) | Makes sparse expert computation efficient. |
-| Finding skill neurons (Wang et al., 2022) | FFN activations predict task identity, the motivation for adapting FFN blocks. |
-| Neuron specialization (Tan et al., EMNLP 2024) | Task-specific neurons in multilingual translation. |
-| Mapping Networks (Sen and Mukherjee, 2026) | The principle TaskMap builds on. |
-| Super-NaturalInstructions (Wang et al., 2022) | 1,600+ tasks with declarative instructions, a benchmark for generalizing to unseen tasks. |
+- [tau-bench](https://arxiv.org/abs/2406.12045), 2024
+- [tau2-bench](https://arxiv.org/abs/2506.07982), 2025
 
 ## World models
 
-| Paper | Venue | One line |
-|---|---|---|
-| [World Models](https://arxiv.org/abs/1803.10122) | Ha & Schmidhuber · 2018 · NeurIPS 2018 | V (encode), M (dynamics), C (control). First policy trained inside its own dream. |
-| [PlaNet → DreamerV3](https://arxiv.org/abs/1811.04551) | Hafner et al. · PlaNet ICML 2019 · DreamerV3 Nature 2025 | RSSM: a deterministic memory plus a stochastic latent, the standard latent state for model-based RL. |
-| [LeCun: A Path Towards AMI + I-JEPA](https://arxiv.org/abs/2301.08243) | LeCun 2022 (position paper) · Assran et al. ICCV 2023 | Predict in representation space instead of pixels, with a latent for what cannot be predicted. |
-| [Genie: Generative Interactive Environments](https://arxiv.org/abs/2402.15391) | Google DeepMind · ICML 2024 Best Paper | Learns latent actions from unlabeled video, so a world model does not need action labels. |
-| [DIAMOND: Diffusion for World Modeling](https://arxiv.org/abs/2405.12399) | Alonso et al. · NeurIPS 2024 Spotlight | Diffusion in pixel space as the world model, visual detail matters for the agent. |
-| [UniSim: Learning Interactive Real-World Simulators](https://arxiv.org/abs/2310.06114) | Yang, Du et al. · ICLR 2024 | One video model conditioned on many kinds of actions, trained across datasets. |
-| [Navigation World Models](https://arxiv.org/abs/2412.03572) | Bar, LeCun et al. · CVPR 2025 Best Paper Honorable Mention | Conditional diffusion transformer that plans navigation by imagining future views. |
-| [DINO-WM](https://arxiv.org/abs/2411.04983) | Zhou, LeCun, Pinto · ICML 2025 | World model on frozen DINOv2 patch features, zero-shot planning with no reconstruction. |
-| [V-JEPA 2](https://arxiv.org/abs/2506.09985) | Meta FAIR · 2025 | Video JEPA pretrained at scale, then an action-conditioned predictor for robot planning. |
-| [Ctrl-World](https://arxiv.org/abs/2510.10125) | Guo, Finn et al. · ICLR 2026 | Controllable multi-view world model for robot manipulation. Reproduced. |
-| [SD-JEPA](https://arxiv.org/abs/2605.31111) | 2026 · arXiv | Separates a progression subspace from a content subspace. |
-| [LeWorldModel](https://arxiv.org/abs/2603.19312) | 2026 · arXiv | End-to-end JEPA that trains stably without the usual collapse tricks. |
-| [Dreamer 4](https://arxiv.org/abs/2509.24527) | Hafner et al. · 2025 | Trains an agent from offline data only, inside the world model. |
-| [Understanding World or Predicting Future?](https://arxiv.org/abs/2411.14499) | Ding et al. · ACM Computing Surveys | Survey that splits the field into understanding the world and predicting the future. |
-| [EHRXDiff](https://arxiv.org/abs/2409.07012) | Kyung et al. KAIST · CHIL 2025 | Predicts the next chest X-ray from the previous one plus EHR events. |
-| [CLARITY](https://arxiv.org/abs/2512.08029) | UCF CRCV · 2025 | Simulates context-aware disease trajectories in latent space to guide treatment decisions. |
-| [MeWM](https://arxiv.org/abs/2506.02327) | ICCV 2025 | Medical world model that simulates tumor evolution under treatment. |
-| [BrLP](https://arxiv.org/abs/2405.03328) | MICCAI 2024 Oral | Latent diffusion for individual brain MRI progression. |
+- [World Models](https://arxiv.org/abs/1803.10122), 2018
+- [PlaNet](https://arxiv.org/abs/1811.04551), 2019
+- DreamerV3, 2025
+- A Path Towards Autonomous Machine Intelligence, 2022
+- [I-JEPA](https://arxiv.org/abs/2301.08243), 2023
+- [Genie](https://arxiv.org/abs/2402.15391), 2024
+- [DIAMOND](https://arxiv.org/abs/2405.12399), 2024
+- [UniSim](https://arxiv.org/abs/2310.06114), 2024
+- [Navigation World Models](https://arxiv.org/abs/2412.03572), 2025
+- [DINO-WM](https://arxiv.org/abs/2411.04983), 2025
+- [V-JEPA 2](https://arxiv.org/abs/2506.09985), 2025
+- [Ctrl-World](https://arxiv.org/abs/2510.10125), 2026
+- [SD-JEPA](https://arxiv.org/abs/2605.31111), 2026
+- [LeWorldModel](https://arxiv.org/abs/2603.19312), 2026
+- [Dreamer 4](https://arxiv.org/abs/2509.24527), 2025
+- [Understanding World or Predicting Future?](https://arxiv.org/abs/2411.14499), 2024
+- [EHRXDiff](https://arxiv.org/abs/2409.07012), 2025
+- [CLARITY](https://arxiv.org/abs/2512.08029), 2025
+- [MeWM](https://arxiv.org/abs/2506.02327), 2025
+- [BrLP](https://arxiv.org/abs/2405.03328), 2024
 
-## Running large models locally
+## Local inference
 
-The [page](https://etherimirr.github.io/reading-notes/local-inference/) follows five lines of work:
-compressing weights, KV cache and attention, parallel decoding, tiering and offloading, and model
-architectures that are friendlier to local hardware.
-
-Papers covered on the page:
-
-- Deep Compression (Han, Mao, Dally, ICLR Best Paper) (2016)
-- EIE (Han et al., ISCA) (2016)
-- LLM.int8() (Dettmers et al., NeurIPS) (2022)
-- GPTQ (Frantar, Alistarh et al., ICLR) (2023)
-- SmoothQuant (Xiao, Lin et al., Song Han group, ICML) (2023)
-- AWQ (Lin et al., Song Han group, MLSys 2024 Best Paper) (2023–24)
-- QLoRA (Dettmers et al., NeurIPS) (2023)
-- QuIP# (ICML 2024), AQLM (ICML 2024) (2023–24)
-- BitNet b1.58 (2024-02) → BitNet b1.58 2B4T (2025-04) (2024–25)
-- MXFP4 / NVFP4 formats (2023–25)
-- RFID-MoE and expert-level MoE compression (ICML 2026)
-- MQA (Shazeer, One Write-Head is All You Need) (2019)
-- FlashAttention (Dao et al., NeurIPS) (2022)
-- Orca (Yu et al., OSDI) (2022)
-- vLLM / PagedAttention (Kwon et al., SOSP) (2023)
-- GQA (Ainslie et al., EMNLP) (2023)
-- H2O (Zhang et al., NeurIPS) (2023)
-- StreamingLLM (Xiao et al., Song Han group) (2023 → ICLR 2024)
-- KIVI (ICML), KVQuant (NeurIPS) (2024)
-- MLA (DeepSeek-V2) (2024-05)
-- Hybrid attention: Jamba, MiniMax-01, Qwen3-Next, Kimi Linear (2024–25)
-- Speculative decoding (Leviathan et al., ICML 2023; Chen et al., DeepMind) (2022–23)
-- Medusa (ICML) (2024)
-- EAGLE (ICML 2024) → EAGLE-2 (EMNLP 2024) → EAGLE-3 (2025) (2024–25)
-- MTP (DeepSeek-V3) (2024-12)
-- Diffusion language models: LLaDA, Mercury, Gemini Diffusion (2025)
-- FlexGen (Sheng et al., ICML) (2023)
-- Deja Vu (Liu et al., ICML) (2023)
-- LLM in a flash (Alizadeh et al., Apple) (2023-12 → ACL 2024)
-- PowerInfer (Song et al., SJTU IPADS, SOSP 2024) and PowerInfer-2 (2024)
-- Mixtral offloading (Eliseev & Mazur, 2023)
-- KTransformers (Chen et al., Tsinghua MADSys, SOSP 2025)
-- DALI, FlashMoE, MoE-CORE, FineMoE (EuroSys 2026)
-- Mixtral 8x7B (Mistral) (2023-12)
-- DeepSeek-V3 / R1 (2024-12 / 2025-01)
-- Qwen3 (04), Kimi K2 (07), gpt-oss (08) (2025)
-- Qwen3-Next, Kimi Linear; DeepSeek-V4, Qwen3.5 (2025–26)
+- Deep Compression, 2016
+- EIE, 2016
+- LLM.int8(), 2022
+- GPTQ, 2023
+- SmoothQuant, 2023
+- AWQ, 2024
+- QLoRA, 2023
+- QuIP#, 2024
+- BitNet b1.58, 2024
+- RFID-MoE, 2026
+- Multi-Query Attention, 2019
+- FlashAttention, 2022
+- Orca, 2022
+- vLLM, 2023
+- GQA, 2023
+- H2O, 2023
+- StreamingLLM, 2023
+- KIVI, 2024
+- Speculative decoding, 2023
+- Medusa, 2024
+- EAGLE, 2024
+- LLaDA, 2025
+- FlexGen, 2023
+- Deja Vu, 2023
+- LLM in a flash, 2023
+- PowerInfer, 2024
+- Mixtral offloading, 2023
+- KTransformers, 2025
+- Mixtral 8x7B, 2023
+- DeepSeek-V3, 2024
+- Qwen3, 2025
